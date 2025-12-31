@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="canonical" href="https://help.nuvem7.com.br/blog/autenticacao-serpro-certificado.html">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Autenticação no SERPRO: por que certificados válidos falham no teste completo | Nuvem7</title>
+
+  <meta name="description" content="Entenda por que certificados ICP-Brasil válidos falham no CCD do SERPRO e como o OID da política do certificado é decisivo na autenticação governamental." />
+
+  <meta name="keywords" content="SERPRO, certificado digital, ICP-Brasil, autenticação mTLS, OID certificado, CCD SERPRO, certificado A1 A3, política de certificado" />
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      color: #1f2937;
+      background: #f9fafb;
+      line-height: 1.6;
+    }
+    header {
+      background: #0f172a;
+      color: white;
+      padding: 70px 20px;
+      text-align: center;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2, h3 {
+      color: #0f172a;
+    }
+    header h1 {
+      color: white;
+      font-size: 2.2em;
+      margin-bottom: 10px;
+    }
+    .cta {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 14px 32px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 1.05em;
+    }
+    .cta:hover {
+      background: #1d4ed8;
+    }
+    ul, ol {
+      padding-left: 20px;
+    }
+    .highlight {
+      background: #e0f2fe;
+      padding: 25px;
+      border-left: 6px solid #0284c7;
+      margin: 40px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+    }
+    table th, table td {
+      border: 1px solid #cbd5f5;
+      padding: 12px;
+      text-align: left;
+    }
+    table th {
+      background: #eef2ff;
+    }
+    footer {
+      background: #e5e7eb;
+      padding: 35px 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #374151;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>
+    Autenticação no SERPRO:<br>
+    <span style="font-size: 0.7em; font-weight: normal;">
+      Por que certificados válidos falham no teste completo
+    </span>
+  </h1>
+
+  <p style="max-width: 900px; margin: 20px auto; font-size: 1.1em;">
+    Um detalhe técnico ignorado em muitos projetos de integração governamental:
+    <strong>a política do certificado digital (OID)</strong>.
+  </p>
+
+  <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br">
+    Falar com Especialista | Book IT Support
+  </a>
+</header>
+
+<section>
+
+  <h2>O problema raramente está no token ou no navegador</h2>
+
+  <p>
+    Em integrações com sistemas governamentais, como os do
+    <strong>:contentReference[oaicite:0]{index=0}</strong>,
+    é comum ver equipes tentando resolver falhas de autenticação ajustando:
+  </p>
+
+  <ul>
+    <li>tipo do certificado (A1 ou A3)</li>
+    <li>token ou driver</li>
+    <li>navegador</li>
+    <li>configurações de TLS</li>
+  </ul>
+
+  <p>
+    Esses ajustes quase nunca resolvem quando o erro ocorre no
+    <strong>CCD – teste completo</strong>.
+  </p>
+
+  <h2>O fator decisivo: Política de Certificado (OID)</h2>
+
+  <p>
+    Todo certificado ICP-Brasil possui um identificador de política (OID),
+    que define exatamente para quais finalidades ele pode ser utilizado.
+  </p>
+
+  <p>
+    Dois certificados podem ser válidos, emitidos pela mesma Autoridade Certificadora
+    e com Key Usage correto — e ainda assim apenas um será aceito para autenticação governamental.
+  </p>
+
+  <h2>Exemplo real de validação no SERPRO</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>OID da Política</th>
+        <th>Resultado no CCD – teste completo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2.16.76.1.2.3.125</td>
+        <td>Rejeitado</td>
+      </tr>
+      <tr>
+        <td>2.16.76.1.2.1.133</td>
+        <td>Aceito para autenticação forte</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="highlight">
+    <h3>Por que isso acontece?</h3>
+    <p>
+      O SERPRO não valida apenas a cadeia ICP-Brasil.
+      Ele cruza o OID da política do certificado com uma lista interna
+      de políticas explicitamente autorizadas para autenticação governamental.
+    </p>
+  </div>
+
+  <h2>Teste simples vs teste completo</h2>
+
+  <p>
+    O teste simples realiza apenas validações básicas.
+    Já o CCD – teste completo valida a política do certificado de forma estrita.
+  </p>
+
+  <p>
+    É nesse ponto que certificados aparentemente corretos falham.
+  </p>
+
+  <h2>Como evitar retrabalho e atrasos em projetos</h2>
+
+  <ul>
+    <li>validar o OID da política antes da emissão do certificado</li>
+    <li>confirmar compatibilidade com o ambiente governamental alvo</li>
+    <li>evitar reemissões desnecessárias</li>
+  </ul>
+
+  <p>
+    Essa abordagem elimina tentativa e erro e acelera significativamente
+    a entrada em produção.
+  </p>
+
+  <h2>Como a Nuvem7 atua</h2>
+
+  <p>
+    Atuamos de forma preventiva e técnica, garantindo que certificados
+    sejam emitidos com a política correta desde a origem,
+    evitando falhas no teste completo e retrabalho operacional.
+  </p>
+
+  <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br">
+    Agendar Análise Técnica
+  </a>
+
+</section>
+
+<footer>
+  <p>
+    © 2025 Nuvem7 – Suporte de TI Remoto Especializado<br>
+    Autenticação Governamental • Certificados Digitais • Integrações Críticas
+  </p>
+</footer>
+
+</body>
+</html>
