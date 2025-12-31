@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <link rel="canonical" href="https://help.nuvem7.com.br/blog/autenticacao-serpro-certificado.html">
+  <link rel="canonical" href="https://help.nuvem7.com.br/blog/certificado-erro-teste-serpro-autenticacao-login.html">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Autenticação no SERPRO: por que certificados válidos falham no teste completo | Nuvem7</title>
 
-  <meta name="description" content="Entenda por que certificados ICP-Brasil válidos falham no CCD do SERPRO e como o OID da política do certificado é decisivo na autenticação governamental." />
+  <meta name="description" content="Entenda por que certificados ICP-Brasil válidos falham no CCD do SERPRO e como o OID da política do certificado define a autenticação governamental." />
 
-  <meta name="keywords" content="SERPRO, certificado digital, ICP-Brasil, autenticação mTLS, OID certificado, CCD SERPRO, certificado A1 A3, política de certificado" />
+  <meta name="keywords" content="SERPRO, certificado digital, ICP-Brasil, autenticação mTLS, OID certificado, política de certificado, CCD SERPRO, certificado A1 A3" />
 
   <style>
     body {
@@ -81,6 +81,12 @@
       font-size: 13px;
       color: #374151;
     }
+    code {
+      background: #f1f5f9;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.95em;
+    }
   </style>
 </head>
 
@@ -88,54 +94,67 @@
 
 <header>
   <h1>
-    Autenticação no SERPRO:<br>
+    Autenticação no SERPRO<br>
     <span style="font-size: 0.7em; font-weight: normal;">
       Por que certificados válidos falham no teste completo
     </span>
   </h1>
 
   <p style="max-width: 900px; margin: 20px auto; font-size: 1.1em;">
-    Um detalhe técnico ignorado em muitos projetos de integração governamental:
-    <strong>a política do certificado digital (OID)</strong>.
+    Um erro comum em integrações governamentais: ignorar a
+    <strong>política do certificado digital (OID)</strong>.
   </p>
 
   <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br">
-    Falar com Especialista | Book IT Support
+    Falar com Especialista
   </a>
 </header>
 
 <section>
 
-  <h2>O problema raramente está no token ou no navegador</h2>
+  <h2>O problema não está no token, navegador ou tipo do certificado</h2>
 
   <p>
-    Em integrações com sistemas governamentais, como os do
-    <strong>:contentReference[oaicite:0]{index=0}</strong>,
-    é comum ver equipes tentando resolver falhas de autenticação ajustando:
+    Em integrações com sistemas governamentais como os do SERPRO,
+    é comum que equipes tentem resolver falhas de autenticação
+    ajustando ambiente, navegador, TLS ou alternando entre certificados A1 e A3.
   </p>
 
-  <ul>
-    <li>tipo do certificado (A1 ou A3)</li>
-    <li>token ou driver</li>
-    <li>navegador</li>
-    <li>configurações de TLS</li>
-  </ul>
-
   <p>
-    Esses ajustes quase nunca resolvem quando o erro ocorre no
-    <strong>CCD – teste completo</strong>.
+    Quando a falha ocorre no <strong>CCD – teste completo</strong>,
+    esses ajustes quase nunca resolvem.
   </p>
 
   <h2>O fator decisivo: Política de Certificado (OID)</h2>
 
   <p>
-    Todo certificado ICP-Brasil possui um identificador de política (OID),
-    que define exatamente para quais finalidades ele pode ser utilizado.
+    Todo certificado ICP-Brasil possui um identificador de política
+    que define exatamente <strong>para quais finalidades ele pode ser utilizado</strong>.
   </p>
 
   <p>
-    Dois certificados podem ser válidos, emitidos pela mesma Autoridade Certificadora
-    e com Key Usage correto — e ainda assim apenas um será aceito para autenticação governamental.
+    Mesmo certificados válidos, emitidos pela mesma Autoridade Certificadora
+    e com Key Usage correto, podem ser aceitos ou rejeitados
+    exclusivamente com base no OID da política.
+  </p>
+
+  <h2>O que é OID (Object Identifier)</h2>
+
+  <p>
+    OID (<strong>Object Identifier</strong>) é um identificador numérico padronizado,
+    usado para identificar políticas, extensões e finalidades dentro
+    de certificados digitais.
+  </p>
+
+  <p>
+    No contexto da ICP-Brasil, o OID da política define se o certificado
+    pode ser usado para autenticação forte, assinatura digital
+    ou acesso a sistemas governamentais.
+  </p>
+
+  <p>
+    Sistemas como o SERPRO validam explicitamente esse OID
+    durante o processo de autenticação.
   </p>
 
   <h2>Exemplo real de validação no SERPRO</h2>
@@ -154,50 +173,73 @@
       </tr>
       <tr>
         <td>2.16.76.1.2.1.133</td>
-        <td>Aceito para autenticação forte</td>
+        <td>Aceito para autenticação governamental</td>
       </tr>
     </tbody>
   </table>
 
   <div class="highlight">
-    <h3>Por que isso acontece?</h3>
+    <h3>Importante</h3>
     <p>
-      O SERPRO não valida apenas a cadeia ICP-Brasil.
-      Ele cruza o OID da política do certificado com uma lista interna
-      de políticas explicitamente autorizadas para autenticação governamental.
+      O SERPRO cruza o OID da política do certificado
+      com uma lista interna de políticas explicitamente autorizadas.
+      Se o OID não estiver nessa lista, a autenticação falha.
     </p>
   </div>
 
-  <h2>Teste simples vs teste completo</h2>
+  <h2>Como verificar o OID da Política de Certificado</h2>
+
+  <p>
+    Antes de utilizar um certificado em ambientes governamentais,
+    é altamente recomendado verificar manualmente o OID da política.
+  </p>
+
+  <h3>Passo a passo no Windows</h3>
+
+  <ol>
+    <li>Conecte o certificado (A3) ou instale o certificado (A1).</li>
+    <li>Pressione <strong>Windows + R</strong>, digite <strong>certmgr.msc</strong> e pressione Enter.</li>
+    <li>Acesse <strong>Certificados – Usuário Atual → Pessoal → Certificados</strong>.</li>
+    <li>Dê duplo clique no certificado desejado.</li>
+    <li>Acesse a aba <strong>Detalhes</strong>.</li>
+    <li>Selecione <strong>Políticas de Certificado</strong>.</li>
+    <li>
+      No painel inferior, verifique o
+      <strong>Identificador da Política (OID)</strong>,
+      no formato <code>2.16.76.x.x.x.xxx</code>.
+    </li>
+  </ol>
+
+  <div class="highlight">
+    <p>
+      <strong>Dica:</strong><br>
+      A presença de múltiplos OIDs não garante compatibilidade.
+      O sistema pode exigir um OID específico para autenticação governamental.
+    </p>
+  </div>
+
+  <h2>Por que o teste simples passa e o completo falha?</h2>
 
   <p>
     O teste simples realiza apenas validações básicas.
     Já o CCD – teste completo valida a política do certificado de forma estrita.
   </p>
 
-  <p>
-    É nesse ponto que certificados aparentemente corretos falham.
-  </p>
-
-  <h2>Como evitar retrabalho e atrasos em projetos</h2>
+  <h2>Como evitar retrabalho e atrasos</h2>
 
   <ul>
-    <li>validar o OID da política antes da emissão do certificado</li>
-    <li>confirmar compatibilidade com o ambiente governamental alvo</li>
+    <li>validar o OID antes da emissão do certificado</li>
+    <li>confirmar compatibilidade com o ambiente governamental</li>
     <li>evitar reemissões desnecessárias</li>
   </ul>
-
-  <p>
-    Essa abordagem elimina tentativa e erro e acelera significativamente
-    a entrada em produção.
-  </p>
 
   <h2>Como a Nuvem7 atua</h2>
 
   <p>
-    Atuamos de forma preventiva e técnica, garantindo que certificados
-    sejam emitidos com a política correta desde a origem,
-    evitando falhas no teste completo e retrabalho operacional.
+    Atuamos de forma preventiva e técnica,
+    garantindo que certificados sejam emitidos
+    com a política correta desde a origem,
+    evitando falhas no teste completo.
   </p>
 
   <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br">
