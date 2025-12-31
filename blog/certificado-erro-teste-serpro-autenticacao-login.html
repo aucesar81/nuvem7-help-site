@@ -101,8 +101,8 @@
   </h1>
 
   <p style="max-width: 900px; margin: 20px auto; font-size: 1.1em;">
-    Um erro comum em integrações governamentais: ignorar a
-    <strong>política do certificado digital (OID)</strong>.
+    Um erro comum em integrações governamentais:
+    ignorar a <strong>política do certificado digital (OID)</strong>.
   </p>
 
   <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br">
@@ -115,18 +115,20 @@
   <h2>O problema não está no token, navegador ou tipo do certificado</h2>
 
   <p>
-    Em integrações com sistemas governamentais como os do SERPRO por exemplo,
-    é comum que equipes tentem resolver falhas de autenticação
-    ajustando 
-    - Ambiente 
-    - Navegador
-    - TLS
-    - Alternando entre certificados A1 e A3.
+    Em integrações com sistemas governamentais, é comum que equipes tentem
+    resolver falhas de autenticação realizando ajustes como:
   </p>
+
+  <ul>
+    <li>alterações no ambiente</li>
+    <li>troca de navegador</li>
+    <li>ajustes de TLS</li>
+    <li>alternância entre certificados A1 e A3</li>
+  </ul>
 
   <p>
     Quando a falha ocorre no <strong>CCD – teste completo</strong>,
-    esses ajustes quase nunca resolvem.
+    essas tentativas quase nunca resolvem.
   </p>
 
   <h2>O fator decisivo: Política de Certificado (OID)</h2>
@@ -146,8 +148,8 @@
 
   <p>
     OID (<strong>Object Identifier</strong>) é um identificador numérico padronizado,
-    usado para identificar políticas, extensões e finalidades dentro
-    de certificados digitais.
+    utilizado para identificar políticas, extensões e finalidades
+    dentro de certificados digitais.
   </p>
 
   <p>
@@ -156,18 +158,13 @@
     ou acesso a sistemas governamentais.
   </p>
 
-  <p>
-    Sistemas como o SERPRO validam explicitamente esse OID
-    durante o processo de autenticação.
-  </p>
-
-  <h2>Exemplo real de validação no SERPRO</h2>
+  <h2>Exemplo real de validação no teste completo</h2>
 
   <table>
     <thead>
       <tr>
         <th>OID da Política</th>
-        <th>Resultado no CCD – teste completo</th>
+        <th>Resultado no CCD</th>
       </tr>
     </thead>
     <tbody>
@@ -185,9 +182,9 @@
   <div class="highlight">
     <h3>Importante</h3>
     <p>
-      O SERPRO cruza o OID da política do certificado
-      com uma lista interna de políticas explicitamente autorizadas.
-      Se o OID não estiver nessa lista, a autenticação falha.
+      O teste completo valida explicitamente o OID da política do certificado.
+      Se o OID não estiver entre os perfis autorizados,
+      a autenticação falha independentemente do ambiente.
     </p>
   </div>
 
@@ -208,26 +205,40 @@
     <li>Acesse a aba <strong>Detalhes</strong>.</li>
     <li>Selecione <strong>Políticas de Certificado</strong>.</li>
     <li>
-      No painel inferior, verifique o
-      <strong>Identificador da Política (OID)</strong>,
+      Verifique o <strong>Identificador da Política (OID)</strong>,
       no formato <code>2.16.76.x.x.x.xxx</code>.
     </li>
   </ol>
 
-  <div class="highlight">
-    <p>
-      <strong>Dica:</strong><br>
-      A presença de múltiplos OIDs não garante compatibilidade.
-      O sistema pode exigir um OID específico para autenticação governamental.
+  <h3>Exemplo visual: onde localizar o OID no MMC</h3>
+
+  <p>
+    A imagem abaixo ilustra a visualização do certificado no
+    <strong>Microsoft Management Console (MMC)</strong>,
+    com destaque para a aba <strong>Detalhes</strong> e o campo
+    <strong>Políticas de Certificado</strong>.
+  </p>
+
+  <div style="margin: 30px 0; text-align: center;">
+    <a href="https://learn.microsoft.com/en-us/windows/win32/seccrypto/certificate-policies" target="_blank" rel="noopener">
+      <img
+        src="https://learn.microsoft.com/en-us/windows/win32/seccrypto/images/certificate-policies.png"
+        alt="Exemplo do MMC mostrando Certificate Policies e OID do certificado"
+        style="max-width: 100%; border: 1px solid #cbd5f5; border-radius: 6px;"
+      />
+    </a>
+    <p style="font-size: 0.85em; color: #6b7280; margin-top: 8px;">
+      Fonte: Microsoft Learn — Certificate Policies
     </p>
   </div>
 
-  <h2>Por que o teste simples passa e o completo falha?</h2>
-
-  <p>
-    O teste simples realiza apenas validações básicas.
-    Já o CCD – teste completo valida a política do certificado de forma estrita.
-  </p>
+  <div class="highlight">
+    <p>
+      <strong>Dica:</strong><br>
+      A existência de múltiplos OIDs não garante compatibilidade.
+      Sistemas governamentais podem exigir um OID específico.
+    </p>
+  </div>
 
   <h2>Como evitar retrabalho e atrasos</h2>
 
