@@ -238,14 +238,42 @@
   function setLang(lang) {
     document.querySelectorAll('.lang').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.lang-' + lang).forEach(el => el.style.display = 'block');
+
+    document.documentElement.lang = lang;
     localStorage.setItem('lang', lang);
   }
 
+  function detectBrowserLang() {
+    const browserLang = navigator.language || navigator.userLanguage;
+
+    if (!browserLang) {
+      return 'pt-BR';
+    }
+
+    // Normalize
+    const lang = browserLang.toLowerCase();
+
+    if (lang.startsWith('pt')) {
+      return 'pt-BR';
+    }
+
+    if (lang.startsWith('en')) {
+      return 'en-US';
+    }
+
+    return 'pt-BR'; // fallback seguro
+  }
+
   (function () {
-    const savedLang = localStorage.getItem('lang') || 'pt';
-    setLang(savedLang);
+    const savedLang = localStorage.getItem('lang');
+
+    if (savedLang) {
+      setLang(savedLang);
+    } else {
+      const detectedLang = detectBrowserLang();
+      setLang(detectedLang);
+    }
   })();
 </script>
-
 </body>
 </html>
