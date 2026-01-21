@@ -11,6 +11,8 @@
   <meta name="keywords" content="erro active directory, erro replicação active directory, rpc server unavailable 1722, active directory replication error, ad replication issue, suporte active directory" />
 
   <link rel="canonical" href="https://help.nuvem7.com.br/blog/active-directory-replication-error.html" />
+  <link rel="alternate" hreflang="pt-br" href="https://help.nuvem7.com.br/blog/active-directory-replication-error.html" />
+  <link rel="alternate" hreflang="en" href="https://help.nuvem7.com.br/blog/active-directory-replication-error.html" />
 
   <style>
     body {
@@ -61,6 +63,18 @@
       font-size: 13px;
       color: #374151;
     }
+    .lang-switch {
+      text-align: right;
+      max-width: 900px;
+      margin: 15px auto;
+    }
+    .lang-switch button {
+      font-size: 22px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      margin-left: 10px;
+    }
   </style>
 </head>
 
@@ -75,87 +89,133 @@
   </h1>
 </header>
 
+<div class="lang-switch">
+  <button onclick="setLang('pt')" title="Português">🇧🇷</button>
+  <button onclick="setLang('en')" title="English">🇺🇸</button>
+</div>
+
+<!-- PORTUGUÊS -->
+<div class="lang lang-pt">
+
 <section>
   <p>
     O erro de replicação no Active Directory, especialmente o <strong>RPC Server Unavailable (Erro 1722)</strong>,
-    é atualmente um dos problemas mais pesquisados por administradores Windows.
-    Ele impacta diretamente autenticação, GPOs, criação de usuários e estabilidade do domínio.
-  </p>
-
-  <p>
-    The <strong>Active Directory replication error RPC Server Unavailable (1722)</strong>
-    is one of the most common and searched issues in Windows environments, affecting authentication,
-    Group Policies and overall domain health.
+    é um dos problemas mais comuns e pesquisados atualmente por administradores Windows.
   </p>
 </section>
 
 <section>
-  <h2>Principais sintomas | Common symptoms</h2>
+  <h2>Principais sintomas</h2>
   <ul>
-    <li>Falha de login em estações específicas</li>
+    <li>Falhas de login em estações específicas</li>
     <li>GPO não aplica corretamente</li>
     <li>Usuários criados que não aparecem em todos os DCs</li>
     <li>Eventos de erro no log NTDS Replication</li>
-    <li>Replication errors reported by repadmin</li>
   </ul>
 </section>
 
 <section>
-  <h2>Causa técnica do erro 1722 | Root cause</h2>
+  <h2>Causa técnica do erro 1722</h2>
   <p>
     Esse erro indica que um controlador de domínio não consegue se comunicar com outro via RPC.
-    Na prática, quase sempre envolve:
+    Na prática, quase sempre está relacionado a:
   </p>
-
   <ul>
-    <li>Problemas de DNS (causa nº 1)</li>
+    <li>Problemas de DNS (causa mais comum)</li>
     <li>Firewall bloqueando portas RPC dinâmicas</li>
     <li>Conectividade de rede instável</li>
-    <li>Problemas de resolução de nomes entre DCs</li>
-    <li>Diferença de horário entre controladores</li>
+    <li>Diferença de horário entre DCs</li>
   </ul>
-
-  <p>
-    This error means one domain controller cannot establish RPC communication with another,
-    usually caused by DNS misconfiguration, firewall restrictions or network issues.
-  </p>
 </section>
 
 <section>
-  <h2>Riscos de não corrigir | Risks if not fixed</h2>
   <div class="highlight">
+    <h2>Riscos de não corrigir</h2>
     <ul>
       <li>Inconsistência de usuários e grupos</li>
       <li>Falhas intermitentes de autenticação</li>
       <li>GPOs desatualizadas</li>
       <li>Risco de corrupção lógica do Active Directory</li>
-      <li>Impacto direto em sistemas críticos</li>
     </ul>
   </div>
 </section>
 
 <section>
-  <h2>Abordagem correta de diagnóstico | Proper troubleshooting approach</h2>
+  <h2>Abordagem correta de diagnóstico</h2>
   <ol>
     <li>Validar DNS (forward e reverse)</li>
     <li>Executar <code>dcdiag</code> e <code>repadmin /replsummary</code></li>
-    <li>Testar conectividade RPC entre DCs</li>
+    <li>Testar conectividade RPC</li>
     <li>Validar sincronização de horário</li>
-    <li>Revisar regras de firewall</li>
   </ol>
+</section>
 
+</div>
+
+<!-- ENGLISH -->
+<div class="lang lang-en" style="display:none;">
+
+<section>
   <p>
-    A correção definitiva exige análise do ambiente como um todo,
-    não apenas reiniciar serviços ou forçar replicação.
+    The <strong>Active Directory replication error RPC Server Unavailable (1722)</strong>
+    is one of the most common and searched issues in Windows environments today.
   </p>
 </section>
 
 <section>
+  <h2>Common symptoms</h2>
+  <ul>
+    <li>Login failures on specific workstations</li>
+    <li>Group Policy not applying</li>
+    <li>Users not replicating across all domain controllers</li>
+    <li>Replication errors in NTDS logs</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Root cause of error 1722</h2>
+  <p>
+    This error indicates that one domain controller cannot communicate with another via RPC.
+    It is usually caused by:
+  </p>
+  <ul>
+    <li>DNS misconfiguration (most common cause)</li>
+    <li>Firewall blocking dynamic RPC ports</li>
+    <li>Network connectivity issues</li>
+    <li>Time synchronization problems</li>
+  </ul>
+</section>
+
+<section>
   <div class="highlight">
-    <h2>Precisa resolver agora? | Need to fix it now?</h2>
+    <h2>Risks if not fixed</h2>
+    <ul>
+      <li>User and group inconsistencies</li>
+      <li>Intermittent authentication failures</li>
+      <li>Outdated Group Policies</li>
+      <li>Logical Active Directory corruption</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Proper troubleshooting approach</h2>
+  <ol>
+    <li>Validate DNS configuration</li>
+    <li>Run <code>dcdiag</code> and <code>repadmin /replsummary</code></li>
+    <li>Test RPC connectivity</li>
+    <li>Check time synchronization</li>
+  </ol>
+</section>
+
+</div>
+
+<section>
+  <div class="highlight">
+    <h2>Precisa resolver agora? | Need help now?</h2>
     <p>
       Suporte técnico remoto especializado em Active Directory, Windows Server e Microsoft 365.<br>
-      <strong>Pagamento somente após o problema ser resolvido.</strong>
+      <strong>Pagamento somente após a resolução do problema.</strong>
     </p>
 
     <a class="cta" href="https://outlook.office.com/book/HelpNuvem7ItSupport@nuvem7.com.br/?ismsaljsauthenabled" target="_blank" rel="noopener">
@@ -168,13 +228,24 @@
   <p>
     © 2025 Nuvem7 – Suporte de TI Remoto | Remote IT Support
   </p>
-
   <p>
     <strong>Aviso legal | Legal notice:</strong><br>
-    O conteúdo deste artigo é informativo e não substitui uma análise técnica do ambiente.
-    Serviços são prestados com base nas melhores práticas e no cenário apresentado.
+    Este conteúdo é informativo e não substitui uma análise técnica do ambiente.
   </p>
 </footer>
+
+<script>
+  function setLang(lang) {
+    document.querySelectorAll('.lang').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.lang-' + lang).forEach(el => el.style.display = 'block');
+    localStorage.setItem('lang', lang);
+  }
+
+  (function () {
+    const savedLang = localStorage.getItem('lang') || 'pt';
+    setLang(savedLang);
+  })();
+</script>
 
 </body>
 </html>
