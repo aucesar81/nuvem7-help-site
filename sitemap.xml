@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset
-  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Página inicial -->
+  <!-- Home -->
   <url>
     <loc>https://help.nuvem7.com.br/</loc>
-    <lastmod>2026-01-08</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
-  <!-- Blog: Autenticação SERPRO -->
+  <!-- Blog: Active Directory Replication -->
   <url>
-    <loc>https://help.nuvem7.com.br/blog/certificado-erro-teste-serpro-autenticacao-login.html</loc>
-    <lastmod>2026-01-05</lastmod>
+    <loc>https://help.nuvem7.com.br/blog/active-directory-replication-error.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
-  <!-- Blog: SMTP Relay Microsoft 365 -->
+  <!-- Blog: Certificado / SERPRO -->
+  <url>
+    <loc>https://help.nuvem7.com.br/blog/certificado-erro-teste-serpro-autenticacao-login.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Blog: SMTP Relay M365 -->
   <url>
     <loc>https://help.nuvem7.com.br/blog/smtp-relay-m365.html</loc>
-    <lastmod>2026-01-08</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
 
 </urlset>
